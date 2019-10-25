@@ -53,28 +53,33 @@ async function getTweetsFromUser(username, count) {
 async function getScoreFromNews(array) {
   return new Promise((resolve, reject) => {
     let analyzedArr = [];
+    let totalScore = 0;
     array.forEach(value => {
       let descSentiment = sentiment.analyze(value.description);
       let titleSentiment = sentiment.analyze(value.title);
+      let thisScore = (descSentiment.score + titleSentiment.score) / 2;
+      totalScore += thisScore;
       analyzedArr.push({
         "title": value.title,
         "description": value.description,
-        "sentiment": (descSentiment + titleSentiment) / 2
+        "score": thisScore
       });
     })
-    return resolve(analyzedArr);
+    return resolve({totalScore: totalScore, articles: analyzedArr});
   });
 }
 
 async function getScoreFromTweets(array) {
   return new Promise((resolve, reject) => {
     let analyzedArr = [];
+    let totalScore = 0;
     array.forEach(value => {
       let text = value.text;
       let tweetSentiment = sentiment.analyze(text);
+      totalScore += tweetSentiment.score;
       analyzedArr.push({ text: text, score: tweetSentiment.score });
     });
-    resolve(analyzedArr);
+    resolve({totalScore: totalScore, tweets: analyzedArr});
   })
 }
 

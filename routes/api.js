@@ -76,7 +76,7 @@ router.get('/score', async (req, res, next) => {
 
 // Get news and respective score
 router.get('/news', async (req, res, next) => {
-  let params = req.params;
+  let params = req.query;
   if (!params.q)
     return res.send({ error: "Please supply a query in param q" }).status(200);
   try {

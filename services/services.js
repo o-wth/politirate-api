@@ -1,11 +1,16 @@
 const axios = require("axios");
-const Sentiment = require("sentiment");
-const sentiment = Sentiment();
+var Sentiment = require('sentiment');
+var sentiment = new Sentiment();
 
 const keys = require("../config/keys");
+const Twitter = require("twitter");
 const client = new Twitter(keys.twitter);
 
-function getNewsArticles(query, from) {
+var Promise = require('bluebird');
+const fs = Promise.promisifyAll(require('fs'));
+const path = require("path");
+
+async function getNewsArticles(query, from) {
   return new Promise((resolve, reject) => {
     let params = {
       q: query,
@@ -14,23 +19,24 @@ function getNewsArticles(query, from) {
     }
     axios.get(
       'https://newsapi.org/v2/everything',
-      params
-    )
+      {
+        params: params
+      })
       .then(res => {
         resolve(res);
       })
       .catch(err => {
-        reject(error);
+        reject(err);
       })
-      .then(() => {})
+      .then(() => { })
   });
 }
 
-function getTweetsFromUser(username, count) {
+async function getTweetsFromUser(username, count) {
   return new Promise(async (resolve, reject) => {
-    let options = { 
-      screen_name: username, 
-      count: count, 
+    let options = {
+      screen_name: username,
+      count: count,
       exclude_replies: true
     }
     client.get('statuses/user_timeline.json', options, (err, tweets, response) => {
@@ -44,13 +50,60 @@ function getTweetsFromUser(username, count) {
   });
 }
 
-function getScoreFromArray(array) {
+async function getScoreFromNews(array) {
   return new Promise((resolve, reject) => {
-    let array = [];
+    let analyzedArr = [];
     array.forEach(value => {
-      let score = sentiment.analyze(value);
-      analyzedArr.add({"text": value, "score": value});
+      let descSentiment = sentiment.analyze(value.description);
+      let titleSentiment = sentiment.analyze(value.title);
+      analyzedArr.push({
+        "title": value.title,
+        "description": value.description,
+        "sentiment": (descSentiment + titleSentiment) / 2
+      });
     })
-    return analyzedArr;
+    return resolve(analyzedArr);
   });
+}
+
+async function getScoreFromTweets(array) {
+  return new Promise((resolve, reject) => {
+    let analyzedArr = [];
+    array.forEach(value => {
+      let text = value.text;
+      let tweetSentiment = sentiment.analyze(text);
+      analyzedArr.push({ text: text, score: tweetSentiment.score });
+    });
+    resolve(analyzedArr);
+  })
+}
+
+async function getPolitician(name) {
+  let names = JSON.parse(await fs.readFileAsync(path.join(__dirname, "../data/names.json")));
+  let social = JSON.parse(await fs.readFileAsync(path.join(__dirname, "../data/social.json")));
+  politicianList = [];
+  finalList = [];
+  names.forEach(value => {
+    let currentName = `${value.name.first} ${value.name.last}`;
+    if (currentName.indexOf(name) == 0) {
+      politicianList.push({ name: currentName, id: value.id.bioguide });
+    }
+  });
+  politicianList.forEach(value => {
+    social.forEach(socialValue => {
+      socialID = socialValue.id.bioguide;
+      if (socialID == value.id) {
+        finalList.push({ name: value.name, twitter: socialValue.social.twitter, id: value.id });
+      }
+    });
+  });
+  return finalList;
+}
+
+module.exports = {
+  getNewsArticles: getNewsArticles,
+  getTweetsFromUser: getTweetsFromUser,
+  getScoreFromNews: getScoreFromNews,
+  getScoreFromTweets: getScoreFromTweets,
+  getPolitician: getPolitician
 }

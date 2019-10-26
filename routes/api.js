@@ -1,39 +1,39 @@
 var express = require('express');
 var router = express.Router();
 
-var kue = require("kue");
+// var kue = require("kue");
 var services = require('../services/services');
 
-// Create a queue for proessing tasks
-let queue = kue.createQueue({
-  prefix: 'q',
-  redis: {
-    host: "localhost",
-    port: 6379
-  }
-});
+// // Create a queue for proessing tasks
+// let queue = kue.createQueue({
+//   prefix: 'q',
+//   redis: {
+//     host: "localhost",
+//     port: 6379
+//   }
+// });
 
-// Getting the calculated rating for a given name
-queue.process('getPoliticians', 5, async (job, done) => {
+// // Getting the calculated rating for a given name
+// queue.process('getPoliticians', 5, async (job, done) => {
 
-});
+// });
 
-// Getting the calculated rating for a given name
-queue.process('getScore', 5, (job, done) => {
+// // Getting the calculated rating for a given name
+// queue.process('getScore', 5, (job, done) => {
 
-});
+// });
 
-// Getting news articles, alongside each article's respective score
-queue.process('getNewsAndScore', 5, (job, done) => {
-  services.getNewsArticles(job.data.query)
-    .then((res) => { console.log(res); done(res) })
-    .catch(err => { done(new Error(err)) })
-});
+// // Getting news articles, alongside each article's respective score
+// queue.process('getNewsAndScore', 5, (job, done) => {
+//   services.getNewsArticles(job.data.query)
+//     .then((res) => { console.log(res); done(res) })
+//     .catch(err => { done(new Error(err)) })
+// });
 
-// Getting tweets, alongside each tweet's respective score
-queue.process('getTweetsAndScore', 5, (job, done) => {
+// // Getting tweets, alongside each tweet's respective score
+// queue.process('getTweetsAndScore', 5, (job, done) => {
 
-});
+// });
 
 // Base api route
 router.get('/', (req, res, next) => {
@@ -44,9 +44,8 @@ router.get('/', (req, res, next) => {
 router.get('/get_politicians', async (req, res, next) => {
   let params = req.query;
   if (!params.name)
-    res.send({ error: "Please supply a name" });
+    params.name = "";
   let politicanList = await services.getPolitician(params.name);
-  console.log(politicanList);
   return res.send(politicanList);
 });
 

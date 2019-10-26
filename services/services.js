@@ -90,7 +90,7 @@ async function getPolitician(name) {
   finalList = [];
   names.forEach(value => {
     let currentName = `${value.name.first} ${value.name.last}`;
-    if (currentName.indexOf(name) == 0) {
+    if (currentName.toLowerCase().indexOf(name.toLowerCase()) == 0) {
       politicianList.push({ name: currentName, id: value.id.bioguide });
     }
   });

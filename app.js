@@ -17,8 +17,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
 
-app.listen(8080, () => {
-    console.log("started on " + 8080);
-})
+// app.listen(process.env.PORT, () => {
+//     console.log("started on " + process.env.PORT);
+// })
 
 module.exports = app;

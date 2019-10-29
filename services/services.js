@@ -50,6 +50,20 @@ async function getTweetsFromUser(username, count) {
   });
 }
 
+async function getTwitterProfilePicture(username) {
+  return new Promise(async (resolve, reject) => {
+    let options = {
+      screen_name: username
+    };
+    client.get('users/show', options, (err, data) => {
+      if(err) return reject(err);
+      let url = data.profile_image_url_https;
+      url = url.replace("normal", "bigger");
+      resolve({image: url});
+    });
+  })
+}
+
 async function getScoreFromNews(array) {
   return new Promise((resolve, reject) => {
     let analyzedArr = [];
@@ -110,5 +124,6 @@ module.exports = {
   getTweetsFromUser: getTweetsFromUser,
   getScoreFromNews: getScoreFromNews,
   getScoreFromTweets: getScoreFromTweets,
-  getPolitician: getPolitician
+  getPolitician: getPolitician,
+  getTwitterProfilePicture: getTwitterProfilePicture
 }

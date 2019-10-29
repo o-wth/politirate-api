@@ -103,4 +103,18 @@ router.get('/tweets', async (req, res, next) => {
   }
 });
 
+// Get profile image
+router.get('/profile_image', async (req, res, next) => {
+  let params = req.query;
+  if (!params.username)
+    return res.send({ error: "Please supply a username or name" }).status(400);
+  try {
+    let profileImage = await services.getTwitterProfilePicture(params.username);
+    res.send(profileImage);
+  } catch (e) {
+    console.log(e);
+    return res.send(e).status(400);
+  }
+});
+
 module.exports = router; 

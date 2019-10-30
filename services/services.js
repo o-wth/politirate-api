@@ -69,9 +69,22 @@ async function getScoreFromNews(array) {
     let analyzedArr = [];
     let totalScore = 0;
     array.forEach(value => {
-      let descSentiment = sentiment.analyze(value.description);
-      let titleSentiment = sentiment.analyze(value.title);
-      let thisScore = (descSentiment.score + titleSentiment.score) / 2;
+      let num = 2;
+      console.log(value);
+      let descSentiment, titleSentiment;
+      if(!value.description) {
+        descSentiment = {score: 0};
+        num = 1;
+      } else {
+        descSentiment = sentiment.analyze(value.description);
+      }
+      if(!value.title) {
+        titleSentiment = {score: 0};
+        num = 1;
+      } else {
+        titleSentiment = sentiment.analyze(value.title);
+      }
+      let thisScore = (descSentiment.score + titleSentiment.score) / num;
       totalScore += thisScore;
       analyzedArr.push({
         "title": value.title,

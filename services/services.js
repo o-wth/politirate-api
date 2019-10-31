@@ -18,17 +18,16 @@ async function getNewsArticles(query, from) {
       apiKey: keys.news.key
     }
     axios.get(
-      'https://newsapi.org/v2/everything',
-      {
-        params: params
-      })
+        'https://newsapi.org/v2/everything', {
+          params: params
+        })
       .then(res => {
         resolve(res);
       })
       .catch(err => {
         reject(err);
       })
-      .then(() => { })
+      .then(() => {})
   });
 }
 
@@ -65,7 +64,10 @@ async function getScoreFromNews(array) {
         "score": thisScore
       });
     })
-    return resolve({totalScore: totalScore, articles: analyzedArr});
+    return resolve({
+      totalScore: totalScore,
+      articles: analyzedArr
+    });
   });
 }
 
@@ -77,9 +79,15 @@ async function getScoreFromTweets(array) {
       let text = value.text;
       let tweetSentiment = sentiment.analyze(text);
       totalScore += tweetSentiment.score;
-      analyzedArr.push({ text: text, score: tweetSentiment.score });
+      analyzedArr.push({
+        text: text,
+        score: tweetSentiment.score
+      });
     });
-    resolve({totalScore: totalScore, tweets: analyzedArr});
+    resolve({
+      totalScore: totalScore,
+      tweets: analyzedArr
+    });
   })
 }
 
@@ -89,16 +97,31 @@ async function getPolitician(name) {
   politicianList = [];
   finalList = [];
   names.forEach(value => {
-    let currentName = `${value.name.first} ${value.name.last}`;
+    let currentName = value.name.official_full;
+    let currentParty = value.terms[value.terms.length - 1].party;
+    let currentState = value.terms[value.terms.length - 1].state;
     if (currentName.toLowerCase().indexOf(name.toLowerCase()) == 0) {
-      politicianList.push({ name: currentName, id: value.id.bioguide });
+      politicianList.push({
+        name: currentName,
+        id: value.id.bioguide,
+        dob: value.bio.birthday,
+        party: currentParty,
+        state: currentState
+      });
     }
   });
   politicianList.forEach(value => {
     social.forEach(socialValue => {
       socialID = socialValue.id.bioguide;
       if (socialID == value.id) {
-        finalList.push({ name: value.name, twitter: socialValue.social.twitter, id: value.id });
+        finalList.push({
+          name: value.name,
+          twitter: socialValue.social.twitter,
+          id: value.id,
+          dob: value.dob,
+          party: value.party,
+          state: value.state
+        });
       }
     });
   });

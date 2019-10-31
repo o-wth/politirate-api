@@ -53,20 +53,28 @@ router.get('/get_politicians', async (req, res, next) => {
 router.get('/score', async (req, res, next) => {
   let params = req.query;
   if (!params.name)
-    return res.json({ error: "No name provided" }).status(400);
+    return res.json({
+      error: "No name provided"
+    }).status(400);
   try {
     let politicanList = await services.getPolitician(params.name);
-    if(politicanList.length == 0)
-      return res.send({error: "Politician not found"});
+    if (politicanList.length == 0)
+      return res.send({
+        error: "Politician not found"
+      });
     let currentPol = politicanList[0];
 
     let [newsRes, tweetsRes] = await Promise.all([services.getNewsArticles(currentPol.name, params.from),
-      services.getTweetsFromUser(currentPol.twitter)]);
-    let [newsScores, tweetsScores] = await Promise.all([services.getScoreFromNews(newsRes.data.articles), 
-      services.getScoreFromTweets(tweetsRes)]);
+      services.getTweetsFromUser(currentPol.twitter)
+    ]);
+    let [newsScores, tweetsScores] = await Promise.all([services.getScoreFromNews(newsRes.data.articles),
+      services.getScoreFromTweets(tweetsRes)
+    ]);
     let finalScore = newsScores.totalScore + tweetsScores.totalScore;
 
-    return res.send({ score: finalScore });
+    return res.send({
+      score: finalScore
+    });
   } catch (e) {
     console.log(e);
     return res.send(e).status(400);
@@ -77,7 +85,9 @@ router.get('/score', async (req, res, next) => {
 router.get('/news', async (req, res, next) => {
   let params = req.query;
   if (!params.q)
-    return res.send({ error: "Please supply a query in param q" }).status(200);
+    return res.send({
+      error: "Please supply a query in param q"
+    }).status(200);
   try {
     newsRes = await services.getNewsArticles(params.q, params.from);
     scoresWithNews = await services.getScoreFromNews(newsRes.data.articles);
@@ -92,15 +102,19 @@ router.get('/news', async (req, res, next) => {
 router.get('/tweets', async (req, res, next) => {
   let params = req.query;
   if (!params.username && !params.name)
-    return res.send({ error: "Please supply a username or name" }).status(400);
+    return res.send({
+      error: "Please supply a username or name"
+    }).status(400);
   try {
     let tweetsRes = await services.getTweetsFromUser(params.username, req.query.count || 30);
     let tweetScores = await services.getScoreFromTweets(tweetsRes);
-    return res.send({ tweetScores });
+    return res.send({
+      tweetScores
+    });
   } catch (e) {
     console.log(e);
     return res.send(e).status(400);
   }
 });
 
-module.exports = router; 
+module.exports = router;

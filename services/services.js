@@ -135,6 +135,8 @@ async function getPolitician(name) {
     if (currentName.toLowerCase().indexOf(name.toLowerCase()) == 0) {
       politicianList.push({
         name: currentName,
+        firstName: value.name.first,
+        lastName: value.name.last,
         id: value.id.bioguide,
         dob: value.bio.birthday,
         party: currentParty,
@@ -148,6 +150,8 @@ async function getPolitician(name) {
       if (socialID == value.id) {
         finalList.push({
           name: value.name,
+          firstName: value.firstName,
+          lastName: value.lastName,
           twitter: socialValue.social.twitter,
           id: value.id,
           dob: value.dob,

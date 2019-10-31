@@ -55,10 +55,12 @@ async function getTwitterProfilePicture(username) {
       screen_name: username
     };
     client.get('users/show', options, (err, data) => {
-      if(err) return reject(err);
+      if (err) return reject(err);
       let url = data.profile_image_url_https;
       url = url.replace("normal", "bigger");
-      resolve({image: url});
+      resolve({
+        image: url
+      });
     });
   })
 }
@@ -69,16 +71,19 @@ async function getScoreFromNews(array) {
     let totalScore = 0;
     array.forEach(value => {
       let num = 2;
-      console.log(value);
       let descSentiment, titleSentiment;
-      if(!value.description) {
-        descSentiment = {score: 0};
+      if (!value.description) {
+        descSentiment = {
+          score: 0
+        };
         num = 1;
       } else {
         descSentiment = sentiment.analyze(value.description);
       }
-      if(!value.title) {
-        titleSentiment = {score: 0};
+      if (!value.title) {
+        titleSentiment = {
+          score: 0
+        };
         num = 1;
       } else {
         titleSentiment = sentiment.analyze(value.title);
@@ -160,11 +165,6 @@ module.exports = {
   getTweetsFromUser: getTweetsFromUser,
   getScoreFromNews: getScoreFromNews,
   getScoreFromTweets: getScoreFromTweets,
-<<<<<<< HEAD
-  getPolitician: getPolitician
-}
-=======
   getPolitician: getPolitician,
   getTwitterProfilePicture: getTwitterProfilePicture
 }
->>>>>>> e75564d14bc56103472d21362ab818f812d085ab

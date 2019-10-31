@@ -49,14 +49,41 @@ async function getTweetsFromUser(username, count) {
   });
 }
 
+async function getTwitterProfilePicture(username) {
+  return new Promise(async (resolve, reject) => {
+    let options = {
+      screen_name: username
+    };
+    client.get('users/show', options, (err, data) => {
+      if(err) return reject(err);
+      let url = data.profile_image_url_https;
+      url = url.replace("normal", "bigger");
+      resolve({image: url});
+    });
+  })
+}
+
 async function getScoreFromNews(array) {
   return new Promise((resolve, reject) => {
     let analyzedArr = [];
     let totalScore = 0;
     array.forEach(value => {
-      let descSentiment = sentiment.analyze(value.description);
-      let titleSentiment = sentiment.analyze(value.title);
-      let thisScore = (descSentiment.score + titleSentiment.score) / 2;
+      let num = 2;
+      console.log(value);
+      let descSentiment, titleSentiment;
+      if(!value.description) {
+        descSentiment = {score: 0};
+        num = 1;
+      } else {
+        descSentiment = sentiment.analyze(value.description);
+      }
+      if(!value.title) {
+        titleSentiment = {score: 0};
+        num = 1;
+      } else {
+        titleSentiment = sentiment.analyze(value.title);
+      }
+      let thisScore = (descSentiment.score + titleSentiment.score) / num;
       totalScore += thisScore;
       analyzedArr.push({
         "title": value.title,
@@ -133,5 +160,11 @@ module.exports = {
   getTweetsFromUser: getTweetsFromUser,
   getScoreFromNews: getScoreFromNews,
   getScoreFromTweets: getScoreFromTweets,
+<<<<<<< HEAD
   getPolitician: getPolitician
 }
+=======
+  getPolitician: getPolitician,
+  getTwitterProfilePicture: getTwitterProfilePicture
+}
+>>>>>>> e75564d14bc56103472d21362ab818f812d085ab

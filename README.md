@@ -5,10 +5,10 @@ See <https://github.com/o-wth/politirate/tree/master/v3> for the monorepo.
 ## Stack
 
 -   REST JSON API
-    -   routing and load-balancing in [Elixir](https://github.com/elixir-lang/elixir) with [Cowboy](https://github.com/ninenines/cowboy)
+    -   routing and load-balancing in [Elixir](https://github.com/elixir-lang/elixir) with [Cowboy](https://github.com/ninenines/cowboy) and [Absinthe](https://github.com/absinthe-graphql/absinthe)
     -   NIFs to [Rust](https://github.com/rust-lang/rust) using [rustler](https://github.com/rusterlium/rustler)
     -   [Rebar3](https://github.com/erlang/rebar3)
-    -   we recommend applications use [GraphQL](); see [Apollo GraphQL](https://github.com/apollographql/apollo-client) and [`graphql_flutter`](https://github.com/zino-app/graphql-flutter)
+    -   we recommend applications use [GraphQL](https://github.com/graphql/graphql-spec); see [Apollo GraphQL](https://github.com/apollographql/apollo-client) and [`graphql_flutter`](https://github.com/zino-app/graphql-flutter)
 -   [tokenizers](https://github.com/huggingface/tokenizers), [tch-rs](https://github.com/LaurentMazare/tch-rs), [rs-natural](https://github.com/christophertrml/rs-natural), and [rust-bert](https://github.com/guillaume-be/rust-bert)
 
 ## Routes

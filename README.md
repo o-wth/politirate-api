@@ -12,7 +12,7 @@ See <https://github.com/o-wth/politirate/tree/master/v3> for the monorepo.
 -   [tokenizers](https://github.com/huggingface/tokenizers), [tch-rs](https://github.com/LaurentMazare/tch-rs), [rs-natural](https://github.com/christophertrml/rs-natural), and [rust-bert](https://github.com/guillaume-be/rust-bert)
 
 ## Routes
+A score dictionary is defined as a dictionary 
 
 -   **`/politicians`** returns a list of U.S. politicians, where each politician is represented by a dictionary containing the name, the party, the state, etc.
 -   **`/score/<politician>`** returns a dictionary containing the various [pooled subscores](https://github.com/o-wth/politirate/tree/master/v3#algorithm)
--   **`/score/<politician>?platform=<platform>`** returns a dictionary containing the various [subscores](https://github.com/o-wth/politirate/tree/master/v3#algorithm) without pooling (so subscores only calculated for a single platform)

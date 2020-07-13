@@ -8,7 +8,9 @@ See <https://github.com/o-wth/politirate/tree/master/v3> for the monorepo.
     -   [Rust](https://github.com/rust-lang/rust)
     -   [Rocket](https://github.com/SergioBenitez/Rocket) for web
     -   [Juniper](https://github.com/graphql-rust/juniper) for GraphQL
--   [tokenizers](https://github.com/huggingface/tokenizers), [tch-rs](https://github.com/LaurentMazare/tch-rs), [rs-natural](https://github.com/christophertrml/rs-natural), and [rust-bert](https://github.com/guillaume-be/rust-bert)
+-   [tokenizers](https://github.com/huggingface/tokenizers)
+-   bindings from Rust to Python with [RustPython](https://github.com/RustPython/RustPython#embedding-rustpython-into-your-rust-applications), [pyo3](https://github.com/PyO3/pyo3#using-python-from-rust), or [rust-cpython](https://github.com/dgrunwald/rust-cpython)
+-   Python functions using [🤗 Transformers](https://github.com/huggingface/transformers) and [torchMoji](https://github.com/huggingface/torchMoji)
 
 ## Routes
 

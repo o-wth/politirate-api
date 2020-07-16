@@ -11,6 +11,7 @@ See <https://github.com/o-wth/politirate/tree/master/v3> for the monorepo.
 -   [tokenizers](https://github.com/huggingface/tokenizers)
 -   bindings from Rust to Python with [RustPython](https://github.com/RustPython/RustPython#embedding-rustpython-into-your-rust-applications), [pyo3](https://github.com/PyO3/pyo3#using-python-from-rust), or [rust-cpython](https://github.com/dgrunwald/rust-cpython)
 -   Python functions using [🤗 Transformers](https://github.com/huggingface/transformers) and [torchMoji](https://github.com/huggingface/torchMoji)
+-   [rayon](https://github.com/rayon-rs/rayon) for parallelism
 
 ## Routes
 
